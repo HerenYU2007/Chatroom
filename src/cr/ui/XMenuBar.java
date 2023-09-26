@@ -196,6 +196,22 @@ public final class XMenuBar extends JMenuBar {
             });
             frame.setVisible(true);
         }));
+        menu3.add(create("解除极域网络控制", e -> {
+            try {
+                ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "runas /user:Administrator \"cmd /K taskkill /F /IM MasterHelper.exe /T && sc stop tdnetfilter\"");
+                builder.redirectErrorStream(true);
+                Process p = builder.start();
+                int exitCode = p.waitFor();
+                if (exitCode == 0) {
+                    MainFrame.msg("指令执行成功！");
+                } else {
+                    MainFrame.err("指令执行失败！");
+                }
+            } catch (IOException | InterruptedException ex) {
+                MainFrame.err("指令执行失败！");
+                ex.printStackTrace();
+            }
+        }));
         menu3.add(create("清理内存", e -> System.gc()));
 //        menu5.add(create("Dll Loader",e -> {
 //            File file=IO.openFile(new FileNameExtensionFilter("DLL(*.dll)","dll"));
