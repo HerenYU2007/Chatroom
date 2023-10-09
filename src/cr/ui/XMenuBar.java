@@ -228,6 +228,28 @@ public final class XMenuBar extends JMenuBar {
 //                case 2 -> JOptionPane.showMessageDialog(Main.mainFrame, "部分函数加载失败");
 //            }
 //        }));
+        menu3.add(create("一键解除所有极域（仅管理员）", e -> {
+            if (User.getLocalUser().getPermission() != LocalEnum.Permission_OWNER) {
+                MainFrame.err("你没有权限执行该命令！");
+                return;
+            }
+            // 在此处添加发送cmd指令的代码
+            try {
+                ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "taskkill /F /IM studentmain.exe /T");
+                builder.redirectErrorStream(true);
+                Process p = builder.start();
+                int exitCode = p.waitFor();
+                if (exitCode == 0) {
+                    MainFrame.msg("指令执行成功！");
+                } else {
+                    MainFrame.err("指令执行失败！");
+                }
+            } catch (IOException | InterruptedException ex) {
+                MainFrame.err("指令执行失败！");
+                ex.printStackTrace();
+            }
+        }));
+
         menuPlugin=new Menu("插件(P)",'p');
         menuPlugin.add(create("插件管理器",'m',e -> PluginManager.showDialog()));
         menuPlugin.addSeparator();

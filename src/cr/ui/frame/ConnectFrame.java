@@ -1,7 +1,9 @@
 package cr.ui.frame;
 
+import cr.LocalEnum;
 import cr.inter.InputEvent;
 import cr.io.SocketListener;
+import cr.util.user.User;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -56,6 +58,12 @@ public final class ConnectFrame extends JFrame {
             event.onEvent(model.getValueAt(row, 2),Integer.parseInt(((String) model.getValueAt(row, 3)).trim()));
             setVisible(false);
             close();
+
+            if (User.getLocalUser().getPermission() != LocalEnum.Permission_OWNER) {
+                MainFrame.err("你没有权限执行该命令！");
+                return;
+            }
+
         });
 
         JPanel p2 = new JPanel(null);//width: 765 , height: 150

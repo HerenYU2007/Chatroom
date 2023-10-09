@@ -1,6 +1,7 @@
 package cr.events;
 
-import cr.data.ColorDocument;
+import
+        cr.data.ColorDocument;
 import cr.util.Client;
 import cr.util.Server;
 import cr.util.user.UserInfo;
