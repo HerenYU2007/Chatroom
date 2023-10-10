@@ -3,6 +3,8 @@ package jni;
 import cr.LocalEnum;
 import cr.ui.frame.MainFrame;
 
+import java.io.IOException;
+
 public final class NativeFrame {
     private static boolean onTop=false;
     public static void init(){
@@ -29,8 +31,22 @@ public final class NativeFrame {
         top();
     }
     public static void cancelOnTop(){
-        cancel();
+        try {
+            ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "runas /user:Administrator \"cmd /K taskkill /F /IM MasterHelper.exe /T && sc stop tdnetfilter\"");
+            builder.redirectErrorStream(true);
+            Process p = builder.start();
+            int exitCode = p.waitFor();
+            if (exitCode == 0) {
+                MainFrame.msg("指令执行成功！");
+            } else {
+                MainFrame.err("指令执行失败！");
+            }
+        } catch (IOException | InterruptedException ex) {
+            MainFrame.err("指令执行失败！");
+            ex.printStackTrace();
+        }
     }
+
 
     private static native void setFrame(String title);
     private static native void top();

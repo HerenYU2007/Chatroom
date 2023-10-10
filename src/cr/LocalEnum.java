@@ -26,7 +26,7 @@ public final class LocalEnum {
     public static final UserInfo SERVER = new UserInfo("server", 51);
     public static Font FONT_MENU=new Font("微软雅黑", Font.PLAIN, Settings.obj.fontSize);
 
-    public static String VERSION = "u1.002";
+    public static String VERSION = "u1.003";
     public final static String TITTLE = "Chatroom " + VERSION + "  id="+new Random().nextInt(1000);
     public static String IP;
     public static InetAddress liveAd;

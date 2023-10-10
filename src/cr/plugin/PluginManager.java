@@ -154,6 +154,14 @@ public final class PluginManager {
         }
         frame.setVisible(true);
         flush();
+        frame.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent e) {
+                // 释放资源的代码
+                frame.dispose(); // 关闭窗口
+            }
+        });
+
     }
 
     public static void flush() {

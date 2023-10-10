@@ -6,6 +6,8 @@ import cr.io.IO;
 import cr.tool.Settings;
 import cr.ui.frame.MainFrame;
 import cr.util.Client;
+import cr.events.Event;
+
 
 import javax.swing.*;
 import java.awt.*;
@@ -24,6 +26,9 @@ public final class User implements java.io.Serializable {
         System.out.println("User init:" + (System.currentTimeMillis() - t) + "ms");
     }
 
+    public void sendMessage(Event event) {
+        Client.getClient().sendMessage(event);
+    }
     public static User getLocalUser() {
         return instance;
     }
@@ -107,6 +112,7 @@ public final class User implements java.io.Serializable {
     public String getIp() {
         return ip;
     }
+
 
     @Override
     public String toString() {

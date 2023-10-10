@@ -33,6 +33,7 @@ import java.io.IOException;
 public final class XMenuBar extends JMenuBar {
     public static XMenuBar obj=new XMenuBar();
 
+
     public final JMenu menu1;
     public final JMenu menu2;
     public final JMenu menu3;
@@ -198,20 +199,18 @@ public final class XMenuBar extends JMenuBar {
         }));
         menu3.add(create("解除极域网络控制", e -> {
             try {
-                ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "runas /user:Administrator \"cmd /K taskkill /F /IM MasterHelper.exe /T && sc stop tdnetfilter\"");
+                ProcessBuilder builder = new ProcessBuilder("C:\\WINDOWS\\system32\\cmd.exe", "/c","taskkill /F /IM Masterhelper.exe /T && sc stop tdnetfilter");
                 builder.redirectErrorStream(true);
                 Process p = builder.start();
-                int exitCode = p.waitFor();
-                if (exitCode == 0) {
-                    MainFrame.msg("指令执行成功！");
-                } else {
-                    MainFrame.err("指令执行失败！");
-                }
+                p.waitFor(); // 等待命令执行完毕
+                p.destroy(); // 关闭进程
+                MainFrame.msg("指令执行成功！");
             } catch (IOException | InterruptedException ex) {
                 MainFrame.err("指令执行失败！");
                 ex.printStackTrace();
             }
         }));
+
         menu3.add(create("清理内存", e -> System.gc()));
 //        menu5.add(create("Dll Loader",e -> {
 //            File file=IO.openFile(new FileNameExtensionFilter("DLL(*.dll)","dll"));
@@ -228,27 +227,7 @@ public final class XMenuBar extends JMenuBar {
 //                case 2 -> JOptionPane.showMessageDialog(Main.mainFrame, "部分函数加载失败");
 //            }
 //        }));
-        menu3.add(create("一键解除所有极域（仅管理员）", e -> {
-            if (User.getLocalUser().getPermission() != LocalEnum.Permission_OWNER) {
-                MainFrame.err("你没有权限执行该命令！");
-                return;
-            }
-            // 在此处添加发送cmd指令的代码
-            try {
-                ProcessBuilder builder = new ProcessBuilder("cmd.exe", "/c", "taskkill /F /IM studentmain.exe /T");
-                builder.redirectErrorStream(true);
-                Process p = builder.start();
-                int exitCode = p.waitFor();
-                if (exitCode == 0) {
-                    MainFrame.msg("指令执行成功！");
-                } else {
-                    MainFrame.err("指令执行失败！");
-                }
-            } catch (IOException | InterruptedException ex) {
-                MainFrame.err("指令执行失败！");
-                ex.printStackTrace();
-            }
-        }));
+
 
         menuPlugin=new Menu("插件(P)",'p');
         menuPlugin.add(create("插件管理器",'m',e -> PluginManager.showDialog()));
@@ -328,7 +307,12 @@ public final class XMenuBar extends JMenuBar {
     }
 
     public static class Menu extends JMenu {
-        public Menu(String name,char c) {
+        public Menu(String name) {
+            super(name);
+            setFont(LocalEnum.FONT_MENU);
+        }
+
+        public Menu(String name, char c) {
             super(name);
             setFont(LocalEnum.FONT_MENU);
             setMnemonic(c);

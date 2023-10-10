@@ -45,6 +45,7 @@ public final class Client implements DocumentCreator,Runnable {
         System.out.println("Client init:" + (System.currentTimeMillis() - t) + "ms");
     }
 
+
     public static Client getClient() {
         return instance;
     }

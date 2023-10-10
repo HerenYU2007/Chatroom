@@ -85,8 +85,8 @@ public final class Main {
         PluginManager.init();
         long endTime = System.currentTimeMillis();
         Logger.getLogger().info("Program starts in " + (endTime - startTime) / 1000.0 + 's' + "  JRE version:" + System.getProperty("java.version"));
-        if (!System.getProperty("java.version").startsWith("17")) {
-            MainFrame.warn("检测到当前运行环境非Java17，可能存在兼容性问题，建议使用Java17运行本程序");
+        if (!System.getProperty("java.version").startsWith("20")) {
+            MainFrame.warn("检测到当前运行环境非Java20，可能存在兼容性问题，建议使用Java20运行本程序");
         }
     }
 
