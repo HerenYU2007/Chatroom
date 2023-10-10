@@ -254,9 +254,9 @@ public final class XMenuBar extends JMenuBar {
 
 
         menu6 =new Menu("关于(A)",'a');
-        menu6.add(create("Github仓库", e -> IO.openHttp("https://github.com/BobbyWch/Chatroom/tree/java")));
-        menu6.add(create("Github中国", e -> IO.openHttp("https://hub.fastgit.xyz/BobbyWch/Chatroom/tree/java")));
-        menu6.add(create("进入官网", e -> IO.openHttp("http://bobbyschatroom.top/")));
+        menu6.add(create("Github仓库", e -> IO.openHttp("https://github.com/HerenYU2007/Chatroom/tree/java")));
+        menu6.add(create("Github中国", e -> IO.openHttp("https://hub.nuaa.cf/HerenYU2007/Chatroom/tree/java")));
+        menu6.add(create("进入官网", e -> IO.openHttp("https://hub.nuaa.cf/")));
         add(menu1);
         add(menu2);
         add(menu3);
